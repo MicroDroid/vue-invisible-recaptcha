@@ -1,5 +1,5 @@
 <template>
-	<button :class="computedClass" :type="type" :disabled="!loaded || disabled" :id="id || _uid" :ref="ref" @click="click">
+	<button :class="computedClass" :type="type" :disabled="!loaded || disabled" :id="id || _uid" :ref="reference" @click="click">
 		<slot></slot>
 	</button>
 </template>
@@ -42,7 +42,7 @@ export default {
 			required: false
 		},
 		
-		ref: {
+		reference: {
 			type: String,
 			required: false
 		},
