@@ -78,7 +78,7 @@ export default {
 		renderWait: function() {
 			const self = this;
 			setTimeout(function() {
-				if (typeof grecaptcha !== "undefined") self.render();
+				if (typeof grecaptcha !== "undefined" && grecaptcha.render) self.render();
 				else self.renderWait();
 			}, 200);
 		},
