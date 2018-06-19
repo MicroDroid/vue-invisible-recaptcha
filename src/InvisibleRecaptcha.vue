@@ -1,5 +1,5 @@
 <template>
-	<button :class="computedClass" :type="type" :disabled="!loaded || disabled" :id="id || _uid" :ref="reference" @click="click">
+	<button :class="computedClass" :type="type" :disabled="!loaded || disabled" :id="computedId" :ref="reference" @click="click">
 		<slot></slot>
 	</button>
 </template>
@@ -62,7 +62,7 @@ export default {
 
 	methods: {
 		render: function() {
-			this.widgetId = grecaptcha.render(this.id || this._uid, {
+			this.widgetId = grecaptcha.render(this.computedId, {
 				sitekey: this.sitekey,
 				size: "invisible",
 				badge: this.badge || "bottomright",
@@ -98,6 +98,9 @@ export default {
 			}
 
 			return classArray;
+		},
+		computedId: function() {
+            return this.id ? this.id : 'vue-invisible-recaptcha-' + this._uid;
 		}
 	},
 
