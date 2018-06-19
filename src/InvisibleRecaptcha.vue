@@ -100,7 +100,7 @@ export default {
 			return classArray;
 		},
 		computedId: function() {
-            return this.id ? this.id : 'vue-invisible-recaptcha-' + this._uid;
+			return this.id ? this.id : 'vue-invisible-recaptcha-' + this._uid;
 		}
 	},
 
