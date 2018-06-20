@@ -15,17 +15,19 @@
 
 			badge: {
 				type: String,
-				required: false
+				required: false,
+				default: 'bottomright',
 			},
 
 			theme: {
 				type: String,
-				required: false
+				required: false,
+				default: 'dark',
 			},
 
 			validate: {
 				type: Function,
-				required: false
+				required: false,
 			},
 
 			callback: {
@@ -35,12 +37,13 @@
 
 			disabled: {
 				type: Boolean,
-				required: false
+				required: false,
+				default: false,
 			},
 
 			id: {
 				type: String,
-				required: false
+				required: false,
 			},
 			
 			reference: {
@@ -50,7 +53,8 @@
 			
 			type: {
 				type: String,
-				required: false
+				required: false,
+				default: 'submit',
 			}
 		},
 
@@ -65,9 +69,9 @@
 			render: function() {
 				this.widgetId = grecaptcha.render(this.computedId, {
 					sitekey: this.sitekey,
-					size: "invisible",
-					badge: this.badge || "bottomright",
-					theme: this.theme || "dark",
+					size: 'invisible',
+					badge: this.badge,
+					theme: this.theme,
 					callback: token => {
 						this.callback(token);
 						grecaptcha.reset(this.widgetId);
@@ -79,7 +83,7 @@
 			renderWait: function() {
 				const self = this;
 				setTimeout(function() {
-					if (typeof grecaptcha !== "undefined" && grecaptcha.render) self.render();
+					if (typeof grecaptcha !== 'undefined' && grecaptcha.render) self.render();
 					else self.renderWait();
 				}, 200);
 			},
@@ -92,10 +96,10 @@
 
 		computed: {
 			computedClass: function() {
-				var classArray = this.class ? this.class.split(" ") : [];
+				var classArray = this.class ? this.class.split(' ') : [];
 
 				if (this.value) {
-					classArray.push("invisible-recaptcha");
+					classArray.push('invisible-recaptcha');
 				}
 
 				return classArray;
@@ -106,9 +110,9 @@
 		},
 
 		mounted: function() {
-			if (typeof grecaptcha === "undefined") {
-				var script = document.createElement("script");
-				script.src = "https://www.google.com/recaptcha/api.js?render=explicit";
+			if (typeof grecaptcha === 'undefined') {
+				var script = document.createElement('script');
+				script.src = 'https://www.google.com/recaptcha/api.js?render=explicit';
 				script.onload = this.renderWait;
 
 				document.head.appendChild(script);
