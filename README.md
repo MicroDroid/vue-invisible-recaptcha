@@ -54,6 +54,7 @@ Prop name      =>    Description                         =>   Example
 sitekey        =>    Client-side key from Google         =>   "some-fancy-id"
 badge          =>    Badge location                      =>   "bottomright"
 validate       =>    Func. executed before reCAPTCHA     =>   () => {this.loading = true}
+                                                         =>   If this returns *exactly* false reCAPTCHA won't run
 callback       =>    Func. executed after verification   =>   (recaptchaToken) => {console.log(recaptchaToken)}
 disabled       =>    Whether the button is disabled      =>   true or false
 id             =>    ID for the button                   =>   "do-something-btn"
