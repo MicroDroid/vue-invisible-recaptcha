@@ -1,117 +1,118 @@
 <template>
-	<button :class="computedClass" :type="type" :disabled="!loaded || disabled" :id="computedId" :ref="reference" @click="click">
+	<button :class="computedClass" :type="type" :id="computedId" :disabled="!loaded || disabled" :ref="reference" @click.prevent="click">
+		<div data-size="invisible"/>
 		<slot></slot>
 	</button>
 </template>
 
 <script type="text/javascript">
-export default {
-	props: {
-		sitekey: {
-			type: String,
-			required: true
-		},
+	export default {
+		props: {
+			sitekey: {
+				type: String,
+				required: true
+			},
 
-		badge: {
-			type: String,
-			required: false
-		},
+			badge: {
+				type: String,
+				required: false
+			},
 
-		theme: {
-			type: String,
-			required: false
-		},
+			theme: {
+				type: String,
+				required: false
+			},
 
-		validate: {
-			type: Function,
-			required: false
-		},
+			validate: {
+				type: Function,
+				required: false
+			},
 
-		callback: {
-			type: Function,
-			required: true
-		},
+			callback: {
+				type: Function,
+				required: true
+			},
 
-		disabled: {
-			type: Boolean,
-			required: false
-		},
+			disabled: {
+				type: Boolean,
+				required: false
+			},
 
-		id: {
-			type: String,
-			required: false
-		},
-		
-		reference: {
-			type: String,
-			required: false
-		},
-		
-		type: {
-			type: String,
-			required: false
-		}
-	},
-
-	data: function() {
-		return {
-			widgetId: false,
-			loaded: false
-		};
-	},
-
-	methods: {
-		render: function() {
-			this.widgetId = grecaptcha.render(this.computedId, {
-				sitekey: this.sitekey,
-				size: "invisible",
-				badge: this.badge || "bottomright",
-				theme: this.theme || "dark",
-				callback: token => {
-					this.callback(token);
-					grecaptcha.reset(this.widgetId);
-				}
-			});
-			this.loaded = true;
-		},
-
-		renderWait: function() {
-			const self = this;
-			setTimeout(function() {
-				if (typeof grecaptcha !== "undefined" && grecaptcha.render) self.render();
-				else self.renderWait();
-			}, 200);
-		},
-
-		click: function() {
-			if (this.validate) this.validate();
-			grecaptcha.execute();
-		}
-	},
-
-	computed: {
-		computedClass: function() {
-			var classArray = this.class ? this.class.split(" ") : [];
-
-			if (this.value) {
-				classArray.push("invisible-recaptcha");
+			id: {
+				type: String,
+				required: false
+			},
+			
+			reference: {
+				type: String,
+				required: false
+			},
+			
+			type: {
+				type: String,
+				required: false
 			}
-
-			return classArray;
 		},
-		computedId: function() {
-			return this.id ? this.id : 'vue-invisible-recaptcha-' + this._uid;
+
+		data: function() {
+			return {
+				widgetId: false,
+				loaded: false
+			};
+		},
+
+		methods: {
+			render: function() {
+				this.widgetId = grecaptcha.render(this.computedId, {
+					sitekey: this.sitekey,
+					size: "invisible",
+					badge: this.badge || "bottomright",
+					theme: this.theme || "dark",
+					callback: token => {
+						this.callback(token);
+						grecaptcha.reset(this.widgetId);
+					}
+				});
+				this.loaded = true;
+			},
+
+			renderWait: function() {
+				const self = this;
+				setTimeout(function() {
+					if (typeof grecaptcha !== "undefined" && grecaptcha.render) self.render();
+					else self.renderWait();
+				}, 200);
+			},
+
+			click: function() {
+				if (this.validate && this.validate() !== false)
+					grecaptcha.execute();
+			}
+		},
+
+		computed: {
+			computedClass: function() {
+				var classArray = this.class ? this.class.split(" ") : [];
+
+				if (this.value) {
+					classArray.push("invisible-recaptcha");
+				}
+
+				return classArray;
+			},
+			computedId: function() {
+				return this.id ? this.id : 'vue-invisible-recaptcha-' + this._uid;
+			}
+		},
+
+		mounted: function() {
+			if (typeof grecaptcha === "undefined") {
+				var script = document.createElement("script");
+				script.src = "https://www.google.com/recaptcha/api.js?render=explicit";
+				script.onload = this.renderWait;
+
+				document.head.appendChild(script);
+			} else this.render();
 		}
-	},
-
-	mounted: function() {
-		if (typeof grecaptcha === "undefined") {
-			var script = document.createElement("script");
-			script.src = "https://www.google.com/recaptcha/api.js?render=explicit";
-			script.onload = this.renderWait;
-
-			document.head.appendChild(script);
-		} else this.render();
-	}
-};
+	};
 </script>
