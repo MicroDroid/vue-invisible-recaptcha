@@ -1,6 +1,6 @@
 <template>
-	<button :class="computedClass" :type="type" :id="computedId" :disabled="!loaded || disabled" :ref="reference" @click.prevent="click">
-		<div data-size="invisible"/>
+	<button :class="computedClass" :type="type" :disabled="!loaded || disabled" :ref="reference" @click.prevent="click">
+		<div :id="computedId" data-size="invisible"/>
 		<slot></slot>
 	</button>
 </template>
@@ -89,7 +89,7 @@
 			},
 
 			click: function() {
-				if (this.validate && this.validate() !== false)
+				if (!this.validate || this.validate && this.validate() !== false)
 					grecaptcha.execute();
 			}
 		},
