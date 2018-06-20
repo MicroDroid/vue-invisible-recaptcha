@@ -1,6 +1,6 @@
 {
   "name": "vue-invisible-recaptcha",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Simple component to integrate Invisible Recaptcha",
   "author": "Yousef Sultan <yousef.su.2000@gmail.com>",
   "private": false,

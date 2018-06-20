@@ -1,6 +1,6 @@
 <template>
-	<button :class="computedClass" :type="type" :disabled="!loaded || disabled" :ref="reference" @click.prevent="click">
-		<div :id="computedId" data-size="invisible"/>
+	<button :class="computedClass" :id="id" :type="type" :disabled="!loaded || disabled" :ref="reference" @click.prevent="click">
+		<div :id="recaptchaId" data-size="invisible"/>
 		<slot></slot>
 	</button>
 </template>
@@ -67,7 +67,7 @@
 
 		methods: {
 			render: function() {
-				this.widgetId = grecaptcha.render(this.computedId, {
+				this.widgetId = grecaptcha.render(this.recaptchaId, {
 					sitekey: this.sitekey,
 					size: 'invisible',
 					badge: this.badge,
@@ -104,8 +104,8 @@
 
 				return classArray;
 			},
-			computedId: function() {
-				return this.id ? this.id : 'vue-invisible-recaptcha-' + this._uid;
+			recaptchaId: function() {
+				return 'vue-invisible-recaptcha-' + this._uid;
 			}
 		},
 
